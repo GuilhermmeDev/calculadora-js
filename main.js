@@ -30,8 +30,14 @@ class Calculator {
 	}
 
 	handleOperations() {
-		const result = eval(this.operation.join(""));
+		try {
+			const result = eval(this.operation.join(""));
+		} catch {
+			this.visor.innerText = "Error";
+			throw new Error("Calc Error");
+		}
 
+		const result = eval(this.operation.join(""));
 		this.visor.innerText = result;
 
 		this.previousOperation = this.operation.join("");
@@ -56,13 +62,15 @@ listNums.map((element) => {
 
 	window.document.addEventListener("keypress", (event) => {
 		if (event.key === element.value) {
-			calc.readValues(element.value);
+			element.click();
 		}
 	});
 });
 
-window.document.addEventListener("keypress", (event) => {
+window.document.addEventListener("keyup", (event) => {
 	if (event.key === "Enter") {
 		calc.handleOperations();
+	} else if (event.key === "Backspace") {
+		calc.clearVisor();
 	}
 });
